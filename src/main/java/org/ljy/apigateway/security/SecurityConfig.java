@@ -21,7 +21,7 @@ public class SecurityConfig {
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchange -> exchange
 //                .pathMatchers("/**").permitAll() // 모든 경로 허용
-                .pathMatchers("/api/public/**").permitAll() // 특정 경로만 허용
+                .pathMatchers("/","/api/public/**").permitAll() // 특정 경로만 허용
                 .pathMatchers("/api/private/**").authenticated() // 특정 경로 보호
             )
             .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)

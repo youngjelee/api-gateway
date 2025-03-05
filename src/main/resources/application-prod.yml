@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: http://product-service:8080/
+          predicates:
+            - Path=/api/products/**

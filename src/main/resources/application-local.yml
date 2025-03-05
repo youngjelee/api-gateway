@@ -1,3 +1,19 @@
 spring:
-  application:
-    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # ✅ Product Service
+        - id: product-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/public/product-service/**, /api/private/product-service/**
+          filters:
+            - RewritePath=/api/(?:public|private)/product-service/?(.*), /$1
+
+        # ✅ Order Service
+        - id: order-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/public/order-service/**, /api/private/order-service/**
+          filters:
+            - RewritePath=/api/(?:public|private)/order-service/?(.*), /$1

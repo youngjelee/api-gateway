@@ -1,8 +1,24 @@
 spring:
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true  # ✅ AWS Cloud Map을 통한 서비스 디스커버리 활성화
+          lower-case-service-id: true  # ✅ 서비스 ID를 소문자로 변환하여 사용
+
       routes:
+        # ✅ Product Service (AWS Cloud Map으로 찾음)
         - id: product-service
-          uri: http://product-service:8080/
+          uri: lb://product-service  # ✅ AWS Cloud Map을 통해 동적으로 서비스 검색
           predicates:
-            - Path=/api/products/**
+            - Path=/api/public/product-service/**, /api/private/product-service/**
+          filters:
+            - RewritePath=/api/(?:public|private)/product-service/?(.*), /$1
+
+        # ✅ Order Service (AWS Cloud Map으로 찾음)
+        - id: order-service
+          uri: lb://order-service  # ✅ AWS Cloud Map을 통해 동적으로 서비스 검색
+          predicates:
+            - Path=/api/public/order-service/**, /api/private/order-service/**
+          filters:
+            - RewritePath=/api/(?:public|private)/order-service/?(.*), /$1

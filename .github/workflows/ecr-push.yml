@@ -6,7 +6,7 @@ on:
       - 'k8s/**'
       - 'cheat_sheet/**'
     branches:
-      - main
+      - master
 
 jobs:
   amazon-ecr:
